@@ -30,7 +30,7 @@ function App() {
     }, 1200);
 
     try {
-      const res = await fetch("http://localhost:8000/ask", {
+      const res = await fetch("https://agentic-research-assistant-57dm.onrender.com/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question }),
