@@ -9,9 +9,16 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "convex": "^1.45.0",
+    "framer-motion": "^13.1.1",
+    "inngest": "^4.18.1",
+    "lucide-react": "^1.34.0",
     "next": "16.3.3",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-markdown": "^10.1.0",
+    "react-textarea-autosize": "^8.5.9",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
