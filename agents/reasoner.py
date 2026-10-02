@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
-from langchain_groq import ChatGroq
+
+from agents.llm import get_llm
 
 load_dotenv()
 
@@ -15,11 +16,7 @@ load_dotenv()
 # 4. NEVER generate the actual code.
 # ============================================================
 
-reasoner_llm = ChatGroq(
-    model="openai/gpt-oss-120b",
-    api_key=os.getenv("GROQ_API_KEY"),
-    temperature=0
-)
+reasoner_llm = get_llm("REASONER_MODEL")
 
 
 REASONER_PROMPT = """

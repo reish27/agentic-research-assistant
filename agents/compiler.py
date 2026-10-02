@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -56,7 +57,7 @@ def compile_code(code: str, language: str) -> dict:
                 )
 
                 result = subprocess.run(
-                    ["python", "-m", "py_compile", str(source_file)],
+                    [sys.executable, "-m", "py_compile", str(source_file)],
                     capture_output=True,
                     text=True,
                     timeout=10

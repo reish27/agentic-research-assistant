@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
-from langchain_groq import ChatGroq
+
+from agents.llm import get_llm
 
 load_dotenv()
 
@@ -16,11 +17,7 @@ load_dotenv()
 # ============================================================
 
 
-coder_llm = ChatGroq(
-    model="openai/gpt-oss-120b",
-    api_key=os.getenv("GROQ_API_KEY"),
-    temperature=0
-)
+coder_llm = get_llm("CODER_MODEL")
 
 
 CODER_PROMPT = """
@@ -76,21 +73,27 @@ Do NOT use Markdown code fences.
 def fix_code(
     problem: str,
     previous_code: str,
-    reasoning: str,
-    test_feedback: str
+    reasoning: str = "",
+    test_feedback: str = ""
 ) -> str:
     """
     Agent 2 receives failed test information from Agent 3
     and generates a corrected version of the code.
     """
 
+    reasoning_block = (
+        f"""
+Agent 1 — Reasoning and Specification:
+{reasoning}
+"""
+        if reasoning.strip()
+        else ""
+    )
+
     prompt = f"""
 Original Programming Problem:
 {problem}
-
-Agent 1 — Reasoning and Specification:
-{reasoning}
-
+{reasoning_block}
 Previous Generated Code:
 {previous_code}
 
@@ -98,6 +101,10 @@ Agent 3 — Test Feedback:
 {test_feedback}
 
 The previous code failed one or more tests.
+
+The test feedback is the authoritative description of the failure.
+The expected outputs in the feedback were derived from the problem
+statement, not from the previous code.
 
 Analyze the failure and generate a corrected solution.
 

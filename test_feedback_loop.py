@@ -1,4 +1,4 @@
-from agents.tester import test_code
+from agents.tester import test_code, run_tests, format_failures
 from agents.coder import fix_code
 
 
@@ -91,31 +91,9 @@ for result in initial_report["results"]:
 
 if not initial_report["all_passed"]:
 
-    feedback_parts = []
+    # Only the failing tests are sent back to Agent 2.
 
-    for result in initial_report["results"]:
-
-        if not result["passed"]:
-
-            feedback_parts.append(
-                f"""
-Test {result['test_number']} FAILED
-
-Input:
-{result['input']}
-
-Expected Output:
-{result['expected_output']}
-
-Actual Output:
-{result['actual_output']}
-
-Error:
-{result['error']}
-"""
-            )
-
-    feedback = "\n".join(feedback_parts)
+    feedback = format_failures(initial_report)
 
     print("\n" + "=" * 60)
     print("AGENT 2 — FIXING CODE")
@@ -134,7 +112,11 @@ Error:
     print("AGENT 3 — TESTING FIXED CODE")
     print("=" * 60)
 
-    final_report = test_code(problem, fixed_code)
+    final_report = run_tests(
+        code=fixed_code,
+        language="Python",
+        tests=initial_report["tests"]
+    )
 
     for result in final_report["results"]:
 
